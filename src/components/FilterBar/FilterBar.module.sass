@@ -1,0 +1,64 @@
+
+.wrapper
+    background-color: rgba(0,0,0,0)
+    margin-bottom: 20px
+
+.filter-bar
+    padding: 20px 0 10px 0
+    background-color: #fff
+    border-radius: 5px
+
+.title
+    margin-bottom: 10px
+    padding: 0 20px 0 20px
+    font-weight: 600
+    font-size: 12px
+    line-height: 12px
+    text-transform: uppercase
+
+.list
+    margin: 0
+    padding: 0
+    list-style: none
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
+
+.label
+    position: relative
+    display: block
+    padding: 10px 20px 10px 50px
+    width: 100%
+    &:before
+        content: ''
+        position: absolute
+        display: block
+        top: 10px
+        left: 20px
+        width: 20px
+        height: 20px
+        border: 1px solid #9ABBCE
+        border-radius: 2px
+        background-color: #fff
+
+.checkbox:checked + .label
+    background-color: #F1FCFF
+    &:after
+        content: url('/img/check.svg')
+        z-index: 10
+        position: absolute
+        display: block
+        top: 9px
+        left: 24px
+        width: 12px
+        height: 8px
+
+.checkbox
+    position: absolute
+    width: 1px
+    height: 1px
+    margin: -1px
+    border: 0
+    padding: 0
+    clip: rect(0 0 0 0)
+    overflow: hidden
