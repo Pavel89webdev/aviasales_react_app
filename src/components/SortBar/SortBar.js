@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import { connect } from "react-redux";
 
+import actions from "../../services/actions";
 import sortTabs from "../sortTabs";
 
 import classes from "./SortBar.module.sass";
 
-function SortBar() {
-	const [activeTab, setActiveTab] = useState(1);
-
+function SortBar({ activeTab, changeSortId }) {
 	const tabs = () => {
 		return sortTabs.map((tab) => {
 			const classNames =
@@ -18,7 +18,7 @@ function SortBar() {
 				<button
 					className={classNames}
 					onClick={() => {
-						setActiveTab(tab.id);
+						changeSortId(tab.id);
 					}}
 					key={tab.id}>
 					{tab.label}
@@ -30,4 +30,10 @@ function SortBar() {
 	return <div className={classes.wrapper}>{tabs()}</div>;
 }
 
-export default SortBar;
+const mapStateToProps = (state) => {
+	return {
+		activeTab: state.sortById,
+	};
+};
+
+export default connect(mapStateToProps, actions)(SortBar);
