@@ -6,7 +6,6 @@ import classes from "./FilterBar.module.sass";
 import filters from "../filters";
 
 function Filters({ filters, activeFilterId, changeFilterId }) {
-	console.log(activeFilterId);
 	return filters.map((filter) => (
 		<li className={classes["list-item"]} key={filter.id}>
 			<input
