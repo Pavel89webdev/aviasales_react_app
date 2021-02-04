@@ -24,7 +24,11 @@ const initialState = {
 	activeFilterId: [],
 	sortById: 1,
 	isFetching: false,
-	searchResult: { tickets: null },
+	tickets0Stops: [],
+	tickets1Stops: [],
+	tickets2Stops: [],
+	tickets3Stops: [],
+	stop: false,
 };
 
 const store = createStore(

@@ -9,60 +9,63 @@ function TicketItem({ ticket }) {
 	const backWay = getTicketDescription(ticket.segments[1]);
 
 	return (
-		<div className={classes.item}>
-			<div className={classes.title}>
-				<p className={classes.price}>{price}</p>
-				<img src="/img/S7-logo.svg" alt="логотип компании" />
+		<li>
+			<div className={classes.item}>
+				<div className={classes.title}>
+					<p className={classes.price}>{price}</p>
+					<img src="/img/S7-logo.svg" alt="логотип компании" />
+				</div>
+				<div className={classes.description}>
+					<div>
+						<p className={classes["description-title"]}>
+							{forwardWay.fromTo}
+						</p>
+						<p className={classes["description-text"]}>
+							{forwardWay.departureTime} –{" "}
+							{forwardWay.arraivalTime}
+						</p>
+					</div>
+					<div>
+						<p className={classes["description-title"]}>В пути</p>
+						<p className={classes["description-text"]}>
+							{forwardWay.duration}
+						</p>
+					</div>
+					<div>
+						<p className={classes["description-title"]}>
+							{forwardWay.stopsCount}
+						</p>
+						<p className={classes["description-text"]}>
+							{forwardWay.renderStops}
+						</p>
+					</div>
+				</div>
+				<div className={classes.description}>
+					<div>
+						<p className={classes["description-title"]}>
+							{backWay.fromTo}
+						</p>
+						<p className={classes["description-text"]}>
+							{backWay.departureTime} – {backWay.arraivalTime}
+						</p>
+					</div>
+					<div>
+						<p className={classes["description-title"]}>В пути</p>
+						<p className={classes["description-text"]}>
+							{backWay.duration}
+						</p>
+					</div>
+					<div>
+						<p className={classes["description-title"]}>
+							{backWay.stopsCount}
+						</p>
+						<p className={classes["description-text"]}>
+							{backWay.renderStops}
+						</p>
+					</div>
+				</div>
 			</div>
-			<div className={classes.description}>
-				<div>
-					<p className={classes["description-title"]}>
-						{forwardWay.fromTo}
-					</p>
-					<p className={classes["description-text"]}>
-						{forwardWay.departureTime} – {forwardWay.arraivalTime}
-					</p>
-				</div>
-				<div>
-					<p className={classes["description-title"]}>В пути</p>
-					<p className={classes["description-text"]}>
-						{forwardWay.duration}
-					</p>
-				</div>
-				<div>
-					<p className={classes["description-title"]}>
-						{forwardWay.stopsCount}
-					</p>
-					<p className={classes["description-text"]}>
-						{forwardWay.renderStops}
-					</p>
-				</div>
-			</div>
-			<div className={classes.description}>
-				<div>
-					<p className={classes["description-title"]}>
-						{backWay.fromTo}
-					</p>
-					<p className={classes["description-text"]}>
-						{backWay.departureTime} – {backWay.arraivalTime}
-					</p>
-				</div>
-				<div>
-					<p className={classes["description-title"]}>В пути</p>
-					<p className={classes["description-text"]}>
-						{backWay.duration}
-					</p>
-				</div>
-				<div>
-					<p className={classes["description-title"]}>
-						{backWay.stopsCount}
-					</p>
-					<p className={classes["description-text"]}>
-						{backWay.renderStops}
-					</p>
-				</div>
-			</div>
-		</div>
+		</li>
 	);
 }
 
