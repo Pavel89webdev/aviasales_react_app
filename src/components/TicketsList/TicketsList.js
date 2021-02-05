@@ -79,7 +79,6 @@ function applyFilters(tickets, activeFilterId) {
 	if (activeFilterId.includes(5)) {
 		renderTickets.push(...tickets[3]);
 	}
-	console.log(renderTickets);
 	return renderTickets;
 }
 
