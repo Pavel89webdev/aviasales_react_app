@@ -11,6 +11,7 @@ import SearchService from "../../services/SearchService";
 import FilterBar from "../FilterBar";
 import SortBar from "../SortBar";
 import TicketsList from "../TicketsList";
+import LoadingBar from "../LoadingBar";
 
 import classes from "./App.module.sass";
 
@@ -21,13 +22,15 @@ const composeEnhancers =
 		: compose;
 
 const initialState = {
-	activeFilterId: [],
+	activeFilterId: [1, 2, 3, 4, 5],
 	sortById: 1,
 	isFetching: false,
 	tickets0Stops: [],
 	tickets1Stops: [],
 	tickets2Stops: [],
 	tickets3Stops: [],
+	ticketsCount: 0,
+	loadingProgress: 1,
 	stop: false,
 };
 
@@ -40,25 +43,30 @@ const store = createStore(
 const searchService = new SearchService();
 searchService.getSearchId();
 
-function App() {
-	store.dispatch((dispatch) => {
-		actions.getSearchResults(dispatch, searchService);
-	});
+store.dispatch((dispatch) => {
+	actions.getSearchResults(dispatch, searchService);
+});
 
+function App() {
 	return (
 		<Provider store={store}>
-			<main className={classes.container}>
-				<div className={classes.logo}>
-					<img
-						src={`${process.env.PUBLIC_URL}img/Logo.svg`}
-						alt="aviasales logo"
-					/>
+			<main className={classes.main}>
+				<div className={classes.container}>
+					<div className={classes.logo}>
+						<img
+							src={`${process.env.PUBLIC_URL}img/Logo.svg`}
+							alt="aviasales logo"
+						/>
+					</div>
 				</div>
-				<div className={classes.content}>
-					<FilterBar />
-					<div>
-						<SortBar />
-						<TicketsList />
+				<LoadingBar />
+				<div className={classes.container}>
+					<div className={classes.content}>
+						<FilterBar />
+						<div>
+							<SortBar />
+							<TicketsList />
+						</div>
 					</div>
 				</div>
 			</main>

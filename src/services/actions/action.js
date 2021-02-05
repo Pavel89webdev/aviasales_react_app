@@ -19,7 +19,11 @@ const actions = {
 			tickets2Stops = [],
 			tickets3Stops = [];
 
+		let ticketsCount = 0;
+
 		searchResult.tickets.map((ticket) => {
+			ticketsCount++;
+
 			const stops = Math.max(
 				0,
 				ticket.segments[0].stops.length,
@@ -46,10 +50,11 @@ const actions = {
 			tickets1Stops,
 			tickets2Stops,
 			tickets3Stops,
-			stop: /* searchResult.stop */ true,
+			stop: searchResult.stop,
+			ticketsCount,
 		};
 
-		if (/* !searchResult.stop */ false) {
+		if (!searchResult.stop) {
 			window.setTimeout(() => {
 				this.getSearchResults(dispatch, searchService);
 			}, 0);

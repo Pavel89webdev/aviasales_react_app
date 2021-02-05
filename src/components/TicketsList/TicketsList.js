@@ -5,18 +5,23 @@ import actions from "../../services/actions";
 
 import TicketItem from "../TicketItem";
 import NextResultsButton from "../NextResultsButton";
+import NoResultMessage from "../NoResultMessage";
 
 import classes from "./TicketsList.module.sass";
 
 function TicketsList({ tickets, sortById, activeFilterId }) {
-	const [itemsToshow, addItems] = useState(10);
+	const [itemsToshow, addItems] = useState(3);
 
 	const renderTickets = applyFilters(tickets, activeFilterId);
 	const sortList = sortTickets(renderTickets, sortById);
-
 	const ticketItemsList = sortList.reduce((acc, ticket, index) => {
 		if (index < itemsToshow) {
-			const key = ticket.price + ticket.carrier + ticket.segments[0].date;
+			const key =
+				ticket.price +
+				ticket.carrier +
+				ticket.segments[0].date +
+				ticket.segments[1].date +
+				index;
 			return [...acc, <TicketItem ticket={ticket} key={key} />];
 		}
 		return acc;
@@ -24,7 +29,7 @@ function TicketsList({ tickets, sortById, activeFilterId }) {
 
 	return (
 		<ul className={classes.list}>
-			{ticketItemsList}
+			{ticketItemsList.length ? ticketItemsList : <NoResultMessage />}
 			<li>
 				<NextResultsButton
 					onAddItems={() => {
@@ -74,7 +79,7 @@ function applyFilters(tickets, activeFilterId) {
 	if (activeFilterId.includes(5)) {
 		renderTickets.push(...tickets[3]);
 	}
-
+	console.log(renderTickets);
 	return renderTickets;
 }
 
