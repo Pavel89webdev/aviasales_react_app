@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { connect } from "react-redux";
 
 import actions from "../../services/actions";
@@ -10,18 +10,25 @@ import NoResultMessage from "../NoResultMessage";
 import classes from "./TicketsList.module.sass";
 
 function TicketsList({ tickets, sortById, activeFilterId }) {
-	const [itemsToshow, addItems] = useState(3);
+	const [itemsToshow, addItems] = useState(5);
 
-	const renderTickets = applyFilters(tickets, activeFilterId);
-	const sortList = sortTickets(renderTickets, sortById);
+	const renderTickets = useMemo(() => applyFilters(tickets, activeFilterId), [
+		tickets,
+		activeFilterId,
+	]);
+
+	const sortList = useMemo(() => sortTickets(renderTickets, sortById), [
+		renderTickets,
+		sortById,
+	]);
+
 	const ticketItemsList = sortList.reduce((acc, ticket, index) => {
 		if (index < itemsToshow) {
 			const key =
 				ticket.price +
 				ticket.carrier +
 				ticket.segments[0].date +
-				ticket.segments[1].date +
-				index;
+				ticket.segments[1].date;
 			return [...acc, <TicketItem ticket={ticket} key={key} />];
 		}
 		return acc;
