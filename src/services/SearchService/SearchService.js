@@ -1,10 +1,7 @@
-export default class SearchService {
+class SearchService {
 	constructor() {
 		this.apiBase = "https://front-test.beta.aviasales.ru";
 		this.searchId = null;
-		this.getResoure = this.getResoure.bind(this);
-		this.getSearchId = this.getSearchId.bind(this);
-		this.getSearchResult = this.getSearchResult.bind(this);
 	}
 
 	async getResoure(queryString) {
@@ -15,7 +12,7 @@ export default class SearchService {
 			return result;
 		} catch (e) {
 			console.log("some was going wrong, error:", e);
-			return this.getResoure(queryString);
+			throw new Error(e.message);
 		}
 	}
 
@@ -38,3 +35,5 @@ export default class SearchService {
 		}
 	}
 }
+
+export default new SearchService();

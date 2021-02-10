@@ -1,4 +1,7 @@
 import actionsTypes from "../actionsTypes";
+import searchService from "../../services/SearchService";
+
+const stops = 3;
 
 const actionsCreators = {
 	changeSortId: (id = "all") => ({
@@ -12,57 +15,57 @@ const actionsCreators = {
 	isFetchingOn: () => ({
 		type: actionsTypes.isFetchingOn,
 	}),
-	async getSearchResults(dispatch, searchService) {
+	async getSearchResults(dispatch) {
 		dispatch(actionsCreators.isFetchingOn());
-		let searchResult = await searchService.getSearchResult();
 
-		const tickets0Stops = [],
-			tickets1Stops = [],
-			tickets2Stops = [],
-			tickets3Stops = [];
+		let action = {};
 
-		let ticketsCount = 0;
+		try {
+			let searchResult = await searchService.getSearchResult();
 
-		searchResult.tickets.map((ticket) => {
-			ticketsCount++;
-
-			const stops = Math.max(
-				0,
-				ticket.segments[0].stops.length,
-				ticket.segments[1].stops.length
-			);
-			if (stops === 0) {
-				tickets0Stops.push(ticket);
+			action = {
+				type: actionsTypes.getSearchResults,
+				...sortTicketsByStops(searchResult),
+				stop: searchResult.stop,
+			};
+			if (!searchResult.stop) {
+				this.getSearchResults(dispatch);
 			}
-			if (stops === 1) {
-				tickets1Stops.push(ticket);
-			}
-			if (stops === 2) {
-				tickets2Stops.push(ticket);
-			}
-			if (stops === 3) {
-				tickets3Stops.push(ticket);
-			}
-			return ticket;
-		});
-
-		const action = {
-			type: actionsTypes.getSearchResults,
-			tickets0Stops,
-			tickets1Stops,
-			tickets2Stops,
-			tickets3Stops,
-			stop: searchResult.stop,
-			ticketsCount,
-		};
-
-		if (!searchResult.stop) {
-			window.setTimeout(() => {
-				this.getSearchResults(dispatch, searchService);
-			}, 0);
+		} catch (e) {
+			return this.getSearchResults(dispatch);
 		}
+
 		return dispatch(action);
 	},
 };
 
 export default actionsCreators;
+
+function sortTicketsByStops(searchResult) {
+	const result = {
+		ticketsCount: 0,
+	};
+
+	const addStopsToKey = (stops) => `tickets${stops}Stops`;
+
+	for (let i = 0; i <= stops; i++) {
+		const key = addStopsToKey(i);
+		result[key] = [];
+	}
+
+	searchResult.tickets.map((ticket) => {
+		result.ticketsCount++;
+
+		const stops = Math.max(
+			0,
+			ticket.segments[0].stops.length,
+			ticket.segments[1].stops.length
+		);
+
+		result[addStopsToKey(stops)].push(ticket);
+
+		return ticket;
+	});
+
+	return result;
+}

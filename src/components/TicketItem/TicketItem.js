@@ -1,6 +1,7 @@
 import React from "react";
 
 import classes from "./TicketItem.module.sass";
+import s7Logo from "../../img/S7-logo.svg";
 
 function TicketItem({ ticket }) {
 	const price = ticket.price + " р.";
@@ -13,7 +14,7 @@ function TicketItem({ ticket }) {
 			<div className={classes.item}>
 				<div className={classes.title}>
 					<p className={classes.price}>{price}</p>
-					<img src="/img/S7-logo.svg" alt="логотип компании" />
+					<img src={s7Logo} alt="логотип компании" />
 				</div>
 				<div className={classes.description}>
 					<div>

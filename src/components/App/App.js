@@ -9,8 +9,6 @@ import reduceTickets from "../../services/reduceTickets";
 
 import actionsCreators from "../../services/actionsCreators";
 
-import SearchService from "../../services/SearchService";
-
 import FilterBar from "../FilterBar";
 import SortBar from "../SortBar";
 import TicketsList from "../TicketsList";
@@ -19,6 +17,7 @@ import filters from "../filters";
 import sortTabs from "../sortTabs";
 
 import classes from "./App.module.sass";
+import logo from "../../img/Logo.svg";
 
 // redux dev tools setup:
 const composeEnhancers =
@@ -59,12 +58,7 @@ const store = createStore(
 	composeEnhancers(applyMiddleware(reduxThunk))
 );
 
-const searchService = new SearchService();
-searchService.getSearchId();
-
-store.dispatch((dispatch) => {
-	actionsCreators.getSearchResults(dispatch, searchService);
-});
+store.dispatch((dispatch) => actionsCreators.getSearchResults(dispatch));
 
 function App() {
 	return (
@@ -72,10 +66,7 @@ function App() {
 			<main className={classes.main}>
 				<div className={classes.container}>
 					<div className={classes.logo}>
-						<img
-							src={`${process.env.PUBLIC_URL}img/Logo.svg`}
-							alt="aviasales logo"
-						/>
+						<img src={logo} alt="aviasales logo" />
 					</div>
 				</div>
 				<LoadingBar />

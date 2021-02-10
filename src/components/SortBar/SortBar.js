@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import classNames from "classnames";
 
 import actionsCreators from "../../services/actionsCreators";
 import sortTabs from "../sortTabs";
@@ -9,14 +10,14 @@ import classes from "./SortBar.module.sass";
 function SortBar({ activeTab, changeSortId }) {
 	const tabs = () => {
 		return sortTabs.map((tab) => {
-			const classNames =
-				activeTab === tab.id
-					? [classes.tab, classes.active].join(" ")
-					: classes.tab;
+			const currentClass = classNames(
+				classes.tab,
+				activeTab === tab.id && classes.active
+			);
 
 			return (
 				<button
-					className={classNames}
+					className={currentClass}
 					onClick={() => {
 						changeSortId(tab.id);
 					}}
