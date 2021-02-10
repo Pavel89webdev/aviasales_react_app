@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 
 import classes from "./LoadingBar.module.sass";
 
-function LoadingBar({ loadingProgress, stop }) {
+const expectedTicketsCount = 10000;
+
+function LoadingBar({ ticketsCount, stop }) {
+	const loadingProgress = Math.floor(
+		(ticketsCount / expectedTicketsCount) * 100
+	);
+
 	const right = stop ? 0 : 100 - loadingProgress;
 	const renderClasses = [
 		classes["loading-total"],
@@ -21,8 +27,8 @@ function LoadingBar({ loadingProgress, stop }) {
 
 const mapStateToProps = (state) => {
 	return {
-		loadingProgress: state.loadingProgress,
-		stop: state.stop,
+		stop: state.tickets.stop,
+		ticketsCount: state.tickets.ticketsCount,
 	};
 };
 

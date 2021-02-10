@@ -1,10 +1,13 @@
 import React from "react";
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import reduxThunk from "redux-thunk";
-import reducer from "../../services/reducer";
 
-import actions from "../../services/actions";
+import reduceFilters from "../../services/reduceFilters";
+import reduceSort from "../../services/reduceSort";
+import reduceTickets from "../../services/reduceTickets";
+
+import actionsCreators from "../../services/actionsCreators";
 
 import SearchService from "../../services/SearchService";
 
@@ -12,6 +15,8 @@ import FilterBar from "../FilterBar";
 import SortBar from "../SortBar";
 import TicketsList from "../TicketsList";
 import LoadingBar from "../LoadingBar";
+import filters from "../filters";
+import sortTabs from "../sortTabs";
 
 import classes from "./App.module.sass";
 
@@ -21,21 +26,35 @@ const composeEnhancers =
 		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 		: compose;
 
+const allFiltersOn = () =>
+	filters.reduce((acc, filter) => {
+		acc[`${filter.id}`] = true;
+		return acc;
+	}, {});
+
+const activeFilterId = allFiltersOn();
+const sortById = sortTabs[0].id;
+
 const initialState = {
-	activeFilterId: [1, 2, 3, 4, 5],
-	sortById: 1,
-	isFetching: false,
-	tickets0Stops: [],
-	tickets1Stops: [],
-	tickets2Stops: [],
-	tickets3Stops: [],
-	ticketsCount: 0,
-	loadingProgress: 1,
-	stop: false,
+	activeFilterId,
+	sortById,
+	tickets: {
+		isFetching: false,
+		tickets0Stops: [],
+		tickets1Stops: [],
+		tickets2Stops: [],
+		tickets3Stops: [],
+		ticketsCount: 0,
+		stop: false,
+	},
 };
 
 const store = createStore(
-	reducer,
+	combineReducers({
+		activeFilterId: reduceFilters,
+		sortById: reduceSort,
+		tickets: reduceTickets,
+	}),
 	initialState,
 	composeEnhancers(applyMiddleware(reduxThunk))
 );
@@ -44,7 +63,7 @@ const searchService = new SearchService();
 searchService.getSearchId();
 
 store.dispatch((dispatch) => {
-	actions.getSearchResults(dispatch, searchService);
+	actionsCreators.getSearchResults(dispatch, searchService);
 });
 
 function App() {

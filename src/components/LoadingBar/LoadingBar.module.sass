@@ -13,7 +13,7 @@
     bottom: 0
     right: 100%
     overflow: hidden
-    transition: all 0.3s
+    transition: all 0.5s
 
 .complete
     animation: loading-complete 2s ease 1 forwards
@@ -36,14 +36,10 @@
 
 @keyframes loading-complete
     50%
-        transition: none
-        right: 0%
 
     75%
-        right: 0%
         height: 100%
 
     100%
-        right: 0%
         height: 0px
         margin-bottom: 0

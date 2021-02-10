@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import actions from "../../services/actions";
+import actionsCreators from "../../services/actionsCreators";
 import sortTabs from "../sortTabs";
 
 import classes from "./SortBar.module.sass";
@@ -36,4 +36,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, actions)(SortBar);
+export default connect(mapStateToProps, actionsCreators)(SortBar);

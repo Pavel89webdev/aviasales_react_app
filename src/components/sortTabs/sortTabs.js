@@ -1,7 +1,7 @@
 const sortTabs = [
-	{ label: "самый дешевый", id: 1 },
-	{ label: "самый быстрый", id: 2 },
-	{ label: "оптимальный", id: 3 },
+	{ label: "самый дешевый", id: "cheapest" },
+	{ label: "самый быстрый", id: "fastest" },
+	{ label: "оптимальный", id: "optimal" },
 ];
 
 export default sortTabs;

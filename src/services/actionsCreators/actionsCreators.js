@@ -1,17 +1,19 @@
-const actions = {
-	changeSortId: (id = 1) => ({
-		type: "CHANGE_SORT_ID",
+import actionsTypes from "../actionsTypes";
+
+const actionsCreators = {
+	changeSortId: (id = "all") => ({
+		type: actionsTypes.changeSortId,
 		sortId: id,
 	}),
-	changeFilterId: (id = 1) => ({
-		type: "CHANGE_FILTER_ID",
+	changeFilterId: (id = "all") => ({
+		type: actionsTypes.changeFilterId,
 		filterId: id,
 	}),
 	isFetchingOn: () => ({
-		type: "FETCHING_IS_ON",
+		type: actionsTypes.isFetchingOn,
 	}),
 	async getSearchResults(dispatch, searchService) {
-		dispatch(actions.isFetchingOn());
+		dispatch(actionsCreators.isFetchingOn());
 		let searchResult = await searchService.getSearchResult();
 
 		const tickets0Stops = [],
@@ -45,7 +47,7 @@ const actions = {
 		});
 
 		const action = {
-			type: "GET_SEARCH_RESULTS",
+			type: actionsTypes.getSearchResults,
 			tickets0Stops,
 			tickets1Stops,
 			tickets2Stops,
@@ -63,4 +65,4 @@ const actions = {
 	},
 };
 
-export default actions;
+export default actionsCreators;

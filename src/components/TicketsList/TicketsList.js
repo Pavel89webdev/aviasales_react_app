@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from "react";
 import { connect } from "react-redux";
 
-import actions from "../../services/actions";
+import actionsCreators from "../../services/actionsCreators";
+import filters from "../filters";
+import sortTabs from "../sortTabs";
 
 import TicketItem from "../TicketItem";
 import NextResultsButton from "../NextResultsButton";
@@ -37,13 +39,15 @@ function TicketsList({ tickets, sortById, activeFilterId }) {
 	return (
 		<ul className={classes.list}>
 			{ticketItemsList.length ? ticketItemsList : <NoResultMessage />}
-			<li>
-				<NextResultsButton
-					onAddItems={() => {
-						addItems(itemsToshow + 5);
-					}}
-				/>
-			</li>
+			{ticketItemsList.length ? (
+				<li>
+					<NextResultsButton
+						onAddItems={() => {
+							addItems(itemsToshow + 5);
+						}}
+					/>
+				</li>
+			) : null}
 		</ul>
 	);
 }
@@ -51,51 +55,43 @@ function TicketsList({ tickets, sortById, activeFilterId }) {
 const mapStateToProps = (state) => {
 	return {
 		tickets: [
-			state.tickets0Stops,
-			state.tickets1Stops,
-			state.tickets2Stops,
-			state.tickets3Stops,
+			state.tickets.tickets0Stops,
+			state.tickets.tickets1Stops,
+			state.tickets.tickets2Stops,
+			state.tickets.tickets3Stops,
 		],
 		sortById: state.sortById,
 		activeFilterId: state.activeFilterId,
 	};
 };
 
-export default connect(mapStateToProps, actions)(TicketsList);
+export default connect(mapStateToProps, actionsCreators)(TicketsList);
 
 function applyFilters(tickets, activeFilterId) {
 	let renderTickets = [];
 
-	if (activeFilterId.includes(1)) {
+	if (activeFilterId[filters[0].id]) {
 		tickets.forEach((ticketArr) => renderTickets.push(...ticketArr));
 		return renderTickets;
 	}
 
-	if (activeFilterId.includes(2)) {
-		renderTickets.push(...tickets[0]);
-	}
+	renderTickets = tickets.reduce((acc, tiketsArr, index) => {
+		if (activeFilterId[filters[++index].id]) {
+			acc.push(...tiketsArr);
+		}
+		return acc;
+	}, renderTickets);
 
-	if (activeFilterId.includes(3)) {
-		renderTickets.push(...tickets[1]);
-	}
-
-	if (activeFilterId.includes(4)) {
-		renderTickets.push(...tickets[2]);
-	}
-
-	if (activeFilterId.includes(5)) {
-		renderTickets.push(...tickets[3]);
-	}
 	return renderTickets;
 }
 
 function sortTickets(items, sortId) {
 	let sortList = null;
-	if (items && sortId === 1) {
+	if (items && sortId === sortTabs[0].id) {
 		sortList = items.sort((a, b) => a.price - b.price);
 	}
 
-	if (items && sortId === 2) {
+	if (items && sortId === sortTabs[1].id) {
 		sortList = items.sort(
 			(a, b) =>
 				a.segments[0].duration +
@@ -104,7 +100,7 @@ function sortTickets(items, sortId) {
 		);
 	}
 
-	if (items && sortId === 3) {
+	if (items && sortId === sortTabs[2].id) {
 		sortList = items.sort(
 			(a, b) =>
 				a.segments[0].duration +

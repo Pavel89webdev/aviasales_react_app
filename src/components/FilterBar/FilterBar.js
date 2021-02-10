@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import actions from "../../services/actions";
+import actionsCreators from "../../services/actionsCreators";
 
 import classes from "./FilterBar.module.sass";
 import filters from "../filters";
@@ -9,7 +9,7 @@ function Filters({ filters, activeFilterId, changeFilterId }) {
 	return filters.map((filter) => (
 		<li className={classes["list-item"]} key={filter.id}>
 			<input
-				checked={activeFilterId.includes(filter.id) ? true : false}
+				checked={activeFilterId[filter.id] ? true : false}
 				type="checkbox"
 				id={filter.id}
 				className={classes.checkbox}
@@ -49,4 +49,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, actions)(FilterBar);
+export default connect(mapStateToProps, actionsCreators)(FilterBar);
