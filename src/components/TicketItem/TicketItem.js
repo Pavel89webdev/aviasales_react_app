@@ -1,7 +1,6 @@
 import React from "react";
 
 import classes from "./TicketItem.module.sass";
-import s7Logo from "../../img/S7-logo.svg";
 
 function TicketItem({ ticket }) {
 	const price = ticket.price + " р.";
@@ -9,12 +8,14 @@ function TicketItem({ ticket }) {
 	const forwardWay = getTicketDescription(ticket.segments[0]);
 	const backWay = getTicketDescription(ticket.segments[1]);
 
+	const imgUrl = `http://pics.avs.io/99/36/${ticket.carrier}.png`;
+
 	return (
 		<li>
 			<div className={classes.item}>
 				<div className={classes.title}>
 					<p className={classes.price}>{price}</p>
-					<img src={s7Logo} alt="логотип компании" />
+					<img src={imgUrl} alt="логотип компании" />
 				</div>
 				<div className={classes.description}>
 					<div>
